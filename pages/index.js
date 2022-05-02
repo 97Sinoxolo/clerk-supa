@@ -1,7 +1,23 @@
 import styles from "../styles/Home.module.css";
 import { useUser, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { createClient } from "@supabase/supabase-js";
+import { useState } from "@clerk/nextjs";
+
+const supabaseClient = async (supabaseAccessToken) => {const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_KEY
+  );
+
+  // set Supabase JWT on the client object
+  //so it is sent up with all the Supabase requests
+  supabase.auth.setAuth(supabaseAccessToken);
+
+  return supabase;
+}
 
 export default function Home() {
+  
+
   const { isSignedIn, isLoading, user } = useUser();
   return (
     <>
